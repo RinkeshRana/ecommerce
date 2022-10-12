@@ -1,10 +1,15 @@
 import { useRouter } from "next/router";
 import React from "react";
+import Hero from "../../components/product/Hero";
+import RelatedProduct from "../../components/product/RelatedProduct";
 
 function Product() {
-  const router = useRouter();
-  console.log(router.query.slug);
-  return <div>{router.query.slug}</div>;
+  return (
+    <div className="min-h-screen pt-6">
+      <Hero />
+      <RelatedProduct />
+    </div>
+  );
 }
 
 export default Product;
