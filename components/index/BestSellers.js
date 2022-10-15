@@ -1,7 +1,9 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 function BestSellers() {
+  const router = useRouter();
   const links = [
     {
       id: "1",
@@ -71,7 +73,13 @@ function BestSellers() {
           <div className="flex overflow-x-scroll">
             {/* Best Sellers */}
             {links.map((link) => (
-              <div key={link.id}>
+              <div
+                className="cursor-pointer"
+                key={link.id}
+                onClick={() => {
+                  router.push("/product/2");
+                }}
+              >
                 <div>
                   <div className="flex w-72 hover:shadow-md">
                     <div className="">

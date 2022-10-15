@@ -36,15 +36,25 @@ function Navbar() {
               <HiOutlineTruck />
               Track your order
             </div>
-            <div
-              className="flex items-center font-medium cursor-pointer"
-              onClick={() => {
-                router.push("/register");
-              }}
-            >
+            <div className="flex items-center font-medium ">
               <BiUser />
-              Register&nbsp; <span className="font-normal">or</span>&nbsp;Sign
-              in
+              <span
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push("/register");
+                }}
+              >
+                Register
+              </span>
+              &nbsp; <span className="font-normal">or</span>&nbsp;
+              <span
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push("/login");
+                }}
+              >
+                Sign in
+              </span>
             </div>
           </div>
         </div>
@@ -52,7 +62,12 @@ function Navbar() {
       <div className="flex items-center px-3 justify-between md:justify-evenly space-x-3 pt-3">
         <div className="flex items-center">
           <GiHamburgerMenu className="m-3 text-xl md:hidden" />
-          <h2 className="text-xl md:text-3xl lg:text-5xl font-extrabold font-pompador">
+          <h2
+            className="text-xl md:text-3xl lg:text-5xl font-extrabold font-pompador cursor-pointer"
+            onClick={() => {
+              router.push("/");
+            }}
+          >
             Bombinate<span className="text-4xl text-yellow-400">.</span>
           </h2>
         </div>
@@ -81,9 +96,17 @@ function Navbar() {
           </div>
         </div>
         <div>
-          <div className="flex items-center text-2xl space-x-5">
+          <div className="flex items-center text-2xl space-x-5 relative">
             <AiOutlineHeart />
-            <AiOutlineShoppingCart />
+            <AiOutlineShoppingCart
+              className="cursor-pointer"
+              onClick={() => {
+                router.push("/cart");
+              }}
+            />
+            {/* <span className="absolute top-2 right-0 text-sm bg-white rounded-full">
+              1
+            </span> */}
             <div className="text-lg font-bold hidden lg:block">₹999</div>
           </div>
         </div>

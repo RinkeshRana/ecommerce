@@ -6,3 +6,9 @@
   font-family: "pompador";
   src: url("../public/fonts/pompador.ttf");
 }
+
+@layer components {
+  .checkoutInput{
+    @apply border border-gray-200 rounded-full py-2 px-4 w-full focus:outline-none
+  }
+}

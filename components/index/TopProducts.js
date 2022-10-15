@@ -1,8 +1,9 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 
 function TopProducts() {
+  const router = useRouter();
   const links = [
     {
       id: 1,
@@ -52,7 +53,13 @@ function TopProducts() {
       </div>
       <div className="flex justify-start md:justify-center  overflow-x-scroll md:overflow-x-hidden p-2 space-x-4">
         {links.map((link) => (
-          <div key={link.id} className="flex w-40 hover:shadow-md">
+          <div
+            key={link.id}
+            className="flex w-40 hover:shadow-md cursor-pointer"
+            onClick={() => {
+              router.push("/product/1");
+            }}
+          >
             <div className="p-2 w-56 h-60 justify-between flex-row ">
               <div className="">
                 <p className="text-xs text-gray-400">{link.categority}</p>
