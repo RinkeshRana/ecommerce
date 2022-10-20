@@ -2,9 +2,12 @@ import Image from "next/image";
 import React from "react";
 import { addToCart, removeFromCart } from "../../features/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
-function CartItem({ title, img, quantity, id }) {
+function CartItem({ title, thumbnail, quantity, id, slug }) {
   const dispatch = useDispatch();
+  const router = useRouter();
+
   const decreaseQuantity = () => {
     dispatch(removeFromCart({ id }));
   };
@@ -16,7 +19,7 @@ function CartItem({ title, img, quantity, id }) {
       <div className="flex items-center w-full">
         <div className="relative w-20 h-20 hidden md:block">
           <Image
-            src={"/images/TopProducts/2.png"}
+            src={thumbnail}
             layout="fill"
             alt="Image not avaialable"
             loading="lazy"
@@ -24,7 +27,14 @@ function CartItem({ title, img, quantity, id }) {
         </div>
         <div className="md:ml-6 flex w-2/3">
           <div>
-            <h2 className="md:text-xl font-semibold">{title}</h2>
+            <h2
+              className="md:text-xl font-semibold"
+              onClick={() => {
+                router.push(`/product/${slug}`);
+              }}
+            >
+              {title}
+            </h2>
           </div>
         </div>
         <div className="m-2 font-semibold ml-auto">

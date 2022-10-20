@@ -16,7 +16,6 @@ export const cartSlice = createSlice({
         state.products.push(action.payload);
       } else {
         state.products[index].quantity += 1;
-        console.log(state.products);
       }
     },
     removeFromCart: (state, action) => {
@@ -29,16 +28,6 @@ export const cartSlice = createSlice({
           state.products.splice(index, 1);
         }
       }
-
-      // let newCart = [...state.products];
-
-      // if (index >= 0) {
-      //   newCart.splice(index, 1);
-      // } else {
-      //   console.warn("Item not found in basket");
-      //   console.log(index);
-      // }
-      // state.products = newCart;
     },
     incrementByAmount: (state, action) => {
       state.value += action.payload;
@@ -49,5 +38,10 @@ export const cartSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { addToCart, removeFromCart, remove } = cartSlice.actions;
 export const cartProducts = (state) => state.cart.products;
+export const cartTotal = (state) => state.cart.products.length;
+export const subTotal = (state) =>
+  state.cart.products.reduce((prevValue, product) => {
+    return product.price * product.quantity + prevValue;
+  }, 0);
 
 export default cartSlice.reducer;

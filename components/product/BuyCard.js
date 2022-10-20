@@ -2,23 +2,57 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, removeFromCart } from "../../features/cartSlice";
+import {
+  addToCart,
+  removeFromCart,
+  cartProducts,
+} from "../../features/cartSlice";
 
-function BuyCard() {
+function BuyCard({ price, id, title, slug, thumbnail }) {
   const router = useRouter();
 
-  const [quantity, setQuantity] = useState(0);
   const [color, setColor] = useState("");
-  const cart = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
+  const products = useSelector(cartProducts);
+
+  // for item quantity
+  useEffect(() => {
+    const cartItem = products.find((item) => item.id === id);
+    if (cartItem) {
+      setProductQuantity(cartItem.quantity);
+    } else {
+      setProductQuantity(0);
+    }
+  }, [id, products, router.query.slug]);
+
+  // useEffect(() => {
+  //   Object.keys(products).map((product, index) => {
+  //     if (products[product].id === id) {
+  //       setProductQuantity(products[product].quantity);
+  //     }
+  //   });
+  // }, [id, products]);
+
+  const [productQuantity, setProductQuantity] = useState(0);
 
   const addProduct = () => {
+    // all fields are neccessary for showing on cart screen
     dispatch(
       addToCart({
-        title: "Headphone 123",
-        id: 1,
-        img: "/TopProducts/1.jpg",
-        quantity: quantity + 1,
+        title: title,
+        id: id,
+        thumbnail: thumbnail,
+        quantity: productQuantity + 1,
+        slug: slug,
+        price: price,
+      })
+    );
+  };
+  const removeProduct = () => {
+    dispatch(
+      removeFromCart({
+        id: id,
+        slug: slug,
       })
     );
   };
@@ -30,27 +64,23 @@ function BuyCard() {
         <span className="text-green-500 font-semibold"> In Stock</span>
       </div>
       <div className="flex justify-between items-center">
-        <span className="text-3xl">₹1990</span>
+        <span className="text-3xl">₹{price}</span>
         <span className="text-sm">EMI Option Available</span>
       </div>
       <div className="m-2 font-semibold">
         Quantity:
         <div className="border border-gray-200 rounded-full w-40 flex justify-between p-1 items-center">
-          <span className="ml-3">{quantity}</span>
+          <span className="ml-3">{productQuantity}</span>
           <div>
             <button
               className="w-7 h-7 mx-2 bg-gray-200 rounded-full font-bold"
-              onClick={() => {
-                setQuantity(quantity + 1);
-              }}
+              onClick={addProduct}
             >
               +
             </button>
             <button
               className="w-7 h-7  bg-gray-200 rounded-full font-bold"
-              onClick={() => {
-                quantity > 1 && setQuantity(quantity - 1);
-              }}
+              onClick={removeProduct}
             >
               -
             </button>

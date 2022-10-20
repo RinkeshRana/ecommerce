@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineLocationMarker, HiOutlineTruck } from "react-icons/hi";
 import { BiUser } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -10,11 +10,30 @@ import {
 } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import SearchResult from "./SearchResult";
 
 function Navbar() {
   const router = useRouter();
+  const cartTotal = useSelector((state) => state.cart.products);
+
+  const [searchInput, setSearchInput] = useState("");
+  const [searchData, setSearchData] = useState();
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchInput.length >= 3) {
+        fetch(`/api/products?search=${searchInput}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setSearchData(data);
+            console.log(data);
+          });
+      }
+    }, 1000);
+  }, [searchInput]);
+
   return (
-    <div className="">
+    <div className="relative">
       <section className="hidden md:block">
         <div className="flex justify-evenly py-2 text-sm border-b">
           <div>
@@ -80,6 +99,10 @@ function Navbar() {
                   type="text"
                   placeholder="Search for products "
                   className="rounded-l-3xl w-56 md:w-96 px-4 focus:outline-none h-6 md:h-10"
+                  value={searchInput}
+                  onChange={(e) => {
+                    setSearchInput(e.target.value);
+                  }}
                 />
                 <div className="hidden lg:block">
                   <div className="flex items-center bg-white p-2 ">
@@ -104,9 +127,11 @@ function Navbar() {
                 router.push("/cart");
               }}
             />
-            {/* <span className="absolute top-2 right-0 text-sm bg-white rounded-full">
-              1
-            </span> */}
+            {cartTotal.length > 0 && (
+              <span className="absolute top-3 -right-3  lg:right-12 text-xs p-1 rounded-full h-4 w-4 font-extrabold">
+                {cartTotal.length}
+              </span>
+            )}
             <div className="text-lg font-bold hidden lg:block">₹999</div>
           </div>
         </div>
@@ -118,8 +143,31 @@ function Navbar() {
             type="text"
             placeholder="Search for products"
             className="focus:outline-none w-full"
+            value={searchInput}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+            }}
           />
           {/* <BsFillMicFill className="text-2xl" /> */}
+        </div>
+      </div>
+      <div className="absolute z-10 flex justify-center w-full">
+        <div className="p-2 md:mt-4 w-3/4 md:w-1/2 lg:w-1/4 text-center rounded-md max-h-56 overflow-y-scroll scrollbar-thin scrollbar-thumb-yellow-500">
+          {searchData &&
+            searchData.map((item) => {
+              return (
+                <div
+                  className="w-full bg-indigo-400 my-1 p-3 rounded-md cursor-pointer hover:bg-indigo-500 font-semibold"
+                  key={item.id}
+                  onClick={() => {
+                    setSearchData("");
+                    router.push(`/product/${item.slug}`);
+                  }}
+                >
+                  <div>{item.title}</div>
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>

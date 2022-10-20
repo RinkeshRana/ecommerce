@@ -4,7 +4,7 @@ import OrderSummery from "../../components/checkout/OrderSummery";
 
 function index() {
   return (
-    <div>
+    <div className="min-h-screen">
       <div className="md:flex md:justify-center">
         <div className="md:w-3/4 lg:w-3/5 flex">
           <div className="md:flex justify-center md:mt-7">
