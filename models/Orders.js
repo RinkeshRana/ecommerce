@@ -11,8 +11,11 @@ const OrderSchema = new mongoose.Schema({
         type: String,
         ref: "Product",
       },
-      quantity: Number,
+      id: String,
       price: Number,
+      quantity: Number,
+      slug: String,
+      title: String,
     },
   ],
   total: Number,
@@ -20,6 +23,15 @@ const OrderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  firstName: String,
+  lastName: String,
+  email: String,
+
+  city: String,
+  state: String,
+  street: String,
+  pincode: Number,
+  orderTicket: String,
 });
 
 mongoose.models = {};

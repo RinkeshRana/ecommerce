@@ -30,9 +30,10 @@ function OrderSummery() {
       shippingDetails.street.length < 1 ||
       shippingDetails.pinCode.length < 2
     ) {
-      toast.error("Please enter all fields ");
+      toast.warning("Please enter all fields ");
+      return;
     } else if (allProducts.length === 0) {
-      toast.error("Please add some products!", {
+      toast.warning("Please add some products!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -45,17 +46,41 @@ function OrderSummery() {
       return;
     }
 
-    // const response = await fetch("http://localhost:3000/api/create-order", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     products: allProducts,
-    //   }),
-    // });
-    // const data = await response.json();
-    // console.log(data);
+    const response = await fetch("http://localhost:3000/api/create-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        products: allProducts,
+        shippingDetails: shippingDetails,
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+    if (response.status === 200) {
+      toast.success(`Order Placed Successfully. Ticket ID: ${data}`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      toast.error("Something went wrong", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   return (

@@ -14,6 +14,10 @@ function Address() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(updateDetails({ shippingDetails }));
+  }, [dispatch, shippingDetails]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setShippingDetails({ ...shippingDetails, [name]: value });
