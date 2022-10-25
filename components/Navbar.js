@@ -12,17 +12,19 @@ import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import SearchResult from "./SearchResult";
+import { cartProducts, subTotal } from "../features/cartSlice";
 
 function Navbar() {
   const router = useRouter();
   const cartTotal = useSelector((state) => state.cart.products);
+  const cartSubTotal = useSelector(subTotal);
 
   const [searchInput, setSearchInput] = useState("");
   const [searchData, setSearchData] = useState();
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchInput.length >= 3) {
-        fetch(`/api/products?search=${searchInput}`)
+        fetch(`/api/get-products?search=${searchInput}`)
           .then((res) => res.json())
           .then((data) => {
             setSearchData(data);
@@ -119,20 +121,24 @@ function Navbar() {
           </div>
         </div>
         <div>
-          <div className="flex items-center text-2xl space-x-5 relative">
+          <div className="flex items-center text-2xl space-x-5">
             <AiOutlineHeart />
-            <AiOutlineShoppingCart
-              className="cursor-pointer"
-              onClick={() => {
-                router.push("/cart");
-              }}
-            />
-            {cartTotal.length > 0 && (
-              <span className="absolute top-3 -right-3  lg:right-12 text-xs p-1 rounded-full h-4 w-4 font-extrabold">
-                {cartTotal.length}
-              </span>
-            )}
-            <div className="text-lg font-bold hidden lg:block">₹999</div>
+            <div className="relative">
+              <AiOutlineShoppingCart
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push("/cart");
+                }}
+              />
+              {cartTotal.length > 0 && (
+                <span className="absolute top-3 -right-3 text-xs p-1 rounded-full h-4 w-4 font-extrabold">
+                  {cartTotal.length}
+                </span>
+              )}
+            </div>
+            <div className="text-lg font-bold hidden lg:block">
+              ₹{cartSubTotal}
+            </div>
           </div>
         </div>
       </div>
@@ -157,7 +163,7 @@ function Navbar() {
             searchData.map((item) => {
               return (
                 <div
-                  className="w-full bg-indigo-400 my-1 p-3 rounded-md cursor-pointer hover:bg-indigo-500 font-semibold"
+                  className="w-full bg-yellow-400 my-1 p-3 rounded-md cursor-pointer hover:bg-yellow-500 font-semibold"
                   key={item.id}
                   onClick={() => {
                     setSearchData("");
